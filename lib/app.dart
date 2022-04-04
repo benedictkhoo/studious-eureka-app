@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:studious_eureka/bloc/ethereum_bloc.dart';
+import 'package:studious_eureka/home_screen.dart';
 import 'package:studious_eureka/login/login_screen.dart';
 
 class App extends StatelessWidget {
@@ -16,7 +17,13 @@ class App extends StatelessWidget {
           buildWhen: (previous, current) {
             return previous.status != current.status && current.status != EthereumStateStatus.loading;
           },
-          builder: (_, __) => const LoginScreen(),
+          builder: (_, state) {
+            if (state.status == EthereumStateStatus.connected) {
+              return const HomeScreen();
+            }
+
+            return const LoginScreen();
+          },
         ),
       ),
     );
